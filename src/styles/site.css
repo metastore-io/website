@@ -1,0 +1,249 @@
+@import './tokens.css';
+
+/*
+ * The site's look, after the app: white content edge to edge, the system font, hairline rows, no
+ * boxes; glass only on the bar. Colours, type, spacing and radii come from `tokens.css`, a copy of
+ * the app's @metastore/design-tokens build; the two widths below are page layout, not design tokens.
+ */
+:root {
+  --page-width: 980px;
+  --shot-width: 300px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  margin: 0;
+  background: var(--color-background-background);
+  color: var(--color-text-label);
+  font: var(--typography-body);
+  letter-spacing: var(--typography-body-letter-spacing);
+}
+
+a {
+  color: var(--color-accent-accent);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+a:focus-visible {
+  outline: 2px solid var(--color-accent-accent);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+h1,
+h2,
+p {
+  margin: 0;
+}
+
+.wrap {
+  width: 100%;
+  max-width: var(--page-width);
+  margin-inline: auto;
+  padding-inline: var(--space-5);
+}
+
+/* The bar: the only glass on the page, as in the app's controls layer. */
+.bar {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: var(--color-glass-glass-fill);
+  backdrop-filter: saturate(180%) blur(var(--blur-glass));
+  -webkit-backdrop-filter: saturate(180%) blur(var(--blur-glass));
+  border-bottom: 0.5px solid var(--color-text-separator);
+}
+
+.bar-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: var(--size-tap-min);
+  gap: var(--space-4);
+}
+
+.wordmark {
+  color: var(--color-text-label);
+  font: var(--typography-headline);
+  letter-spacing: var(--typography-headline-letter-spacing);
+}
+
+.bar nav a {
+  font: var(--typography-subheadline);
+  font-weight: 400;
+  letter-spacing: var(--typography-subheadline-letter-spacing);
+}
+
+.bar nav a[aria-current='page'] {
+  color: var(--color-text-label);
+}
+
+/* Start page */
+.hero {
+  display: grid;
+  gap: var(--space-8);
+  align-items: center;
+  padding-block: calc(var(--space-8) * 2) var(--space-8);
+}
+
+.hero h1 {
+  font: var(--typography-price-display);
+  letter-spacing: var(--typography-price-display-letter-spacing);
+  text-wrap: balance;
+}
+
+.lead {
+  margin-top: var(--space-4);
+  color: var(--color-text-label-secondary);
+  text-wrap: pretty;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-5);
+  margin-top: var(--space-6);
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--size-button);
+  padding-inline: var(--space-6);
+  border-radius: var(--radius-full);
+  background: var(--color-accent-accent);
+  color: var(--color-accent-on-accent);
+  font: var(--typography-headline);
+  letter-spacing: var(--typography-headline-letter-spacing);
+}
+
+.button:hover {
+  text-decoration: none;
+  opacity: var(--opacity-pressed);
+}
+
+.note {
+  color: var(--color-text-label-secondary);
+}
+
+.shot {
+  margin: 0;
+  justify-self: center;
+  width: 100%;
+  max-width: var(--shot-width);
+}
+
+.shot img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: var(--radius-xl);
+  outline: 0.5px solid var(--color-text-separator);
+}
+
+.shot figcaption,
+.footnote {
+  margin-top: var(--space-3);
+  color: var(--color-text-label-secondary);
+  font: var(--typography-footnote);
+  letter-spacing: var(--typography-footnote-letter-spacing);
+}
+
+.shot figcaption {
+  text-align: center;
+}
+
+/* Hairline rows: a heading and its text, no boxes. */
+.rows {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 0.5px solid var(--color-text-separator);
+}
+
+.rows > li {
+  display: grid;
+  gap: var(--space-2);
+  padding-block: var(--space-6);
+  border-bottom: 0.5px solid var(--color-text-separator);
+}
+
+.rows h2,
+.rows h3 {
+  margin: 0;
+  font: var(--typography-headline);
+  letter-spacing: var(--typography-headline-letter-spacing);
+}
+
+.rows p {
+  color: var(--color-text-label-secondary);
+  text-wrap: pretty;
+}
+
+.section-title {
+  padding-top: calc(var(--space-8) * 2);
+  padding-bottom: var(--space-4);
+  font: var(--typography-title-1);
+  letter-spacing: var(--typography-title-1-letter-spacing);
+}
+
+/* Text pages: method, privacy, Impressum. */
+.article {
+  max-width: 68ch;
+  padding-top: var(--space-8);
+}
+
+.article h1 {
+  font: var(--typography-large-title);
+  letter-spacing: var(--typography-large-title-letter-spacing);
+}
+
+.article .lead {
+  margin-bottom: var(--space-6);
+}
+
+.footer {
+  display: grid;
+  gap: var(--space-3);
+  padding-block: var(--space-8);
+  margin-top: calc(var(--space-8) * 2);
+  border-top: 0.5px solid var(--color-text-separator);
+  color: var(--color-text-label-secondary);
+  font: var(--typography-footnote);
+  letter-spacing: var(--typography-footnote-letter-spacing);
+}
+
+.footer nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-5);
+}
+
+@media (min-width: 760px) {
+  .hero {
+    grid-template-columns: 1fr var(--shot-width);
+    gap: calc(var(--space-8) * 2);
+  }
+
+  .rows > li {
+    grid-template-columns: 1fr 2fr;
+    gap: var(--space-8);
+  }
+}

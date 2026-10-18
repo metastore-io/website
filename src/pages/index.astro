@@ -1,0 +1,107 @@
+---
+import { getImage } from 'astro:assets';
+import Page from '../layouts/Page.astro';
+import { link, site } from '../site';
+import productDark from '../assets/product-dark.png';
+import productLight from '../assets/product-light.png';
+
+// The app's product page as rendered by `npm run screens` (German, test data), top of the screen.
+const width = 600;
+const light = await getImage({ src: productLight, width, format: 'webp' });
+const dark = await getImage({ src: productDark, width, format: 'webp' });
+
+// What the app does, in the order a sceptical buyer asks. Each line is a rule the code enforces
+// (docs/decision-flow.md, docs/product.md); change them together.
+const points = [
+  {
+    title: 'Niemand kauft sich einen Platz',
+    body: 'Shops können keinen Platz und keine bessere Position kaufen. Die Reihenfolge berechnet eine feste Formel, die nicht weiß, ob uns ein Shop etwas zahlt.',
+  },
+  {
+    title: 'Ein Suchfeld für alles',
+    body: 'Füg einen Link aus einem Shop ein, tipp ein Modell oder eine Kategorie. Jeder Weg endet auf einer Produktseite mit allen Angeboten und einem Urteil zum Preis.',
+  },
+  {
+    title: 'Der Preis, den du wirklich zahlst',
+    body: 'Wir vergleichen Gesamtpreise mit Mehrwertsteuer und Versand. Nennt ein Shop keine Versandkosten, rechnen wir sie nie als kostenlos.',
+  },
+  {
+    title: 'Ein Urteil aus eigener Preisgeschichte',
+    body: 'Ob ein Preis gut ist, messen wir an unserem eigenen Preisverlauf über mehrere Shops. Streichpreise der Shops zählen nicht. Ist ein Produkt zu neu, sagen wir das.',
+  },
+  {
+    title: 'Nur was wir gemessen haben',
+    body: 'Bei jedem Preis steht, wann wir ihn zuletzt bestätigt haben. Produktdaten kommen aus EU-Registern wie dem Energielabel oder aus Angaben, die zwei Quellen bestätigen.',
+  },
+];
+---
+
+<Page
+  description={`${site.name} vergleicht Smartphones in deutschen Shops und zeigt, welches zu dir passt und wo es insgesamt am wenigsten kostet. Kein Shop kann sich einen Platz kaufen.`}
+>
+  <section class="hero" aria-labelledby="claim">
+    <div>
+      <h1 id="claim">Das richtige Produkt. Zum besten Gesamtpreis.</h1>
+      <p class="lead">
+        {site.name} vergleicht Smartphones in deutschen Shops und sagt dir, welches zu dir passt und
+        wo es mit Versand am wenigsten kostet. Kein Shop kann sich einen Platz kaufen.
+      </p>
+      <div class="actions">
+        {
+          site.testflightUrl ? (
+            <a class="button" href={site.testflightUrl}>
+              Beta auf dem iPhone testen
+            </a>
+          ) : (
+            <p class="note">Die Beta für das iPhone startet bald.</p>
+          )
+        }
+        <a href={link('/methode')}>So wählen wir aus</a>
+      </div>
+    </div>
+    <figure class="shot">
+      <picture>
+        <source srcset={dark.src} media="(prefers-color-scheme: dark)" type="image/webp" />
+        <img
+          src={light.src}
+          width={light.attributes.width}
+          height={light.attributes.height}
+          alt="Die Produktseite der App: ein Smartphone mit Preis, Urteil „Guter Preis“, Preisverlauf und den Angeboten der Shops."
+          decoding="async"
+        />
+      </picture>
+      <figcaption>Beispielansicht mit Testdaten</figcaption>
+    </figure>
+  </section>
+
+  <h2 class="section-title">Was anders ist</h2>
+  <ul class="rows">
+    {
+      points.map(point => (
+        <li>
+          <h3>{point.title}</h3>
+          <p>{point.body}</p>
+        </li>
+      ))
+    }
+  </ul>
+
+  <h2 class="section-title">Smartphones zuerst</h2>
+  <ul class="rows">
+    <li>
+      <h3>Eine Kategorie, gründlich</h3>
+      <p>
+        Wir starten mit Smartphones und vergleichen jedes Modell mit seinem Speicher über mehrere
+        Shops. Geschirrspüler folgen als Nächstes.
+      </p>
+    </li>
+    <li>
+      <h3>Womit wir Geld verdienen</h3>
+      <p>
+        Links zu Shops können Werbelinks sein. Kaufst du über einen davon, zahlt uns der Shop eine
+        Provision, dein Preis bleibt gleich. Den Link fügen wir erst ein, wenn du zum Shop wechselst,
+        also nachdem die Reihenfolge feststeht. <a href={link('/methode')}>Mehr zur Methode</a>
+      </p>
+    </li>
+  </ul>
+</Page>

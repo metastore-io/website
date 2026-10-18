@@ -1,0 +1,25 @@
+{
+  "name": "@metastore/website",
+  "version": "0.1.0",
+  "private": true,
+  "description": "The public website: landing page, method, privacy policy and Impressum. Static HTML built with Astro, hosted on GitHub Pages.",
+  "type": "module",
+  "engines": {
+    "node": ">=22.22"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "check": "astro check",
+    "test": "astro build --silent && node --test \"test/*.test.ts\""
+  },
+  "dependencies": {
+    "astro": "^7.4.0"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.10",
+    "@types/node": "^24.19.2",
+    "typescript": "~6.0.3"
+  }
+}
