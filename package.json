@@ -12,7 +12,7 @@
     "build": "astro build",
     "preview": "astro preview",
     "check": "astro check",
-    "test": "astro build --silent && node --test \"test/*.test.ts\""
+    "test": "astro build --silent && html-validate dist && node --test \"test/*.test.ts\""
   },
   "dependencies": {
     "astro": "^7.4.0"
@@ -20,6 +20,7 @@
   "devDependencies": {
     "@astrojs/check": "^0.9.10",
     "@types/node": "^24.19.2",
+    "html-validate": "^11.17.0",
     "typescript": "~6.0.3"
   }
 }
