@@ -7,5 +7,6 @@ export default defineConfig({
   base: site.base,
   output: 'static',
   trailingSlash: 'ignore',
-  build: { format: 'file' },
+  // Styles stay files, never inline, so the pages' content security policy needs no 'unsafe-inline'.
+  build: { format: 'file', inlineStylesheets: 'never' },
 });
