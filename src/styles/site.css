@@ -17,6 +17,8 @@
 }
 
 html {
+  /* Keeps a focused or linked-to element out from under the sticky bar (WCAG 2.4.11). */
+  scroll-padding-top: calc(var(--size-tap-min) + var(--space-4));
   -webkit-text-size-adjust: 100%;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -39,10 +41,40 @@ a:hover {
   text-decoration: underline;
 }
 
-a:focus-visible {
+/* A link in running text is told apart by more than its colour (WCAG 1.4.1). */
+p a {
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+/* No specificity of its own, so `.button` keeps its pill shape when focused. */
+:where(a):focus-visible {
   outline: 2px solid var(--color-accent-accent);
   outline-offset: 2px;
   border-radius: var(--radius-sm);
+}
+
+/* Hidden until a keyboard user reaches it as the first stop on the page. */
+.skip {
+  position: absolute;
+  top: var(--space-2);
+  left: var(--space-4);
+  z-index: 2;
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-sm);
+  background: var(--color-background-background);
+  box-shadow: var(--shadow-raised);
+  font: var(--typography-subheadline);
+  letter-spacing: var(--typography-subheadline-letter-spacing);
+}
+
+.skip:not(:focus) {
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
 }
 
 h1,
@@ -69,6 +101,15 @@ p {
   border-bottom: 0.5px solid var(--color-text-separator);
 }
 
+/* Who asks for more contrast or less transparency gets a solid bar. */
+@media (prefers-contrast: more), (prefers-reduced-transparency: reduce) {
+  .bar {
+    background: var(--color-background-background);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+}
+
 .bar-inner {
   display: flex;
   align-items: center;
@@ -89,7 +130,8 @@ p {
   letter-spacing: var(--typography-subheadline-letter-spacing);
 }
 
-.bar nav a[aria-current='page'] {
+.bar nav a[aria-current='page'],
+.footer nav a[aria-current='page'] {
   color: var(--color-text-label);
 }
 
@@ -134,8 +176,13 @@ p {
   letter-spacing: var(--typography-headline-letter-spacing);
 }
 
+/* Hover lifts the button instead of fading it, which would cut the text's contrast. */
 .button:hover {
   text-decoration: none;
+  box-shadow: var(--shadow-raised);
+}
+
+.button:active {
   opacity: var(--opacity-pressed);
 }
 

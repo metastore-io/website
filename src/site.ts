@@ -21,3 +21,18 @@ export const site = {
 
 /** A site path such as `/methode` with the base in front, for links and comparisons. */
 export const link = (path: string) => `${site.base.replace(/\/$/, '')}${path}` || '/';
+
+/**
+ * The site path of a page as `link()` writes it, from the URL Astro renders it under: the build
+ * (`build.format: 'file'`) sees `/website/methode.html` and `/website/index.html`, the dev server
+ * `/website/methode`. GitHub Pages serves both forms; links and the canonical URL use the short one.
+ */
+export const pagePath = (pathname: string) =>
+  pathname.replace(/\.html$/, '').replace(/(^|\/)index$/, '$1') || '/';
+
+/** The pages in the footer, in order. The bar links only to the method. */
+export const pages = [
+  { path: '/methode', label: 'So wählen wir aus' },
+  { path: '/datenschutz', label: 'Datenschutz' },
+  { path: '/impressum', label: 'Impressum' },
+] as const;

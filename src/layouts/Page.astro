@@ -1,5 +1,7 @@
 ---
-import { link, site } from '../site';
+import tokens from '../styles/tokens.css?raw';
+import { link, pagePath, pages, site } from '../site';
+import { tokenValue } from '../tokens';
 
 interface Props {
   /** The page's own title; the site name is appended. Omit on the start page. */
@@ -9,40 +11,71 @@ interface Props {
 
 const { title, description } = Astro.props;
 const fullTitle = title ? `${title} · ${site.name}` : site.name;
-const canonical = new URL(Astro.url.pathname, Astro.site);
+const path = pagePath(Astro.url.pathname);
+// The short form that link() writes, not the `.html` file the build renders.
+const canonical = new URL(path, site.origin).href;
+const current = (target: string) => (path === link(target) ? 'page' : undefined);
+const themeColor = (scheme: 'light' | 'dark') => tokenValue(tokens, 'color-background-background', scheme);
+
+// Everything the pages load is a file of this site: no inline scripts or styles
+// (`build.inlineStylesheets: 'never'`). Only in the build, since the dev server injects inline
+// scripts. frame-ancestors and HSTS need HTTP headers, which GitHub Pages cannot set (README.md).
+const csp = [
+  "default-src 'none'",
+  "img-src 'self'",
+  "style-src 'self'",
+  "base-uri 'none'",
+  "form-action 'none'",
+].join('; ');
 ---
 
 <!doctype html>
 <html lang="de">
   <head>
     <meta charset="utf-8" />
+    {import.meta.env.PROD ? <meta http-equiv="content-security-policy" content={csp} /> : null}
+    <meta name="referrer" content="same-origin" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="color-scheme" content="light dark" />
+    <meta name="theme-color" media="(prefers-color-scheme: light)" content={themeColor('light')} />
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content={themeColor('dark')} />
     <title>{fullTitle}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
+    <link rel="icon" href={link('/favicon.svg')} type="image/svg+xml" />
+    <link rel="apple-touch-icon" href={link('/apple-touch-icon.png')} />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:locale" content="de_DE" />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta name="twitter:card" content="summary" />
     {site.indexable ? null : <meta name="robots" content="noindex" />}
   </head>
   <body>
+    <a class="skip" href="#inhalt">Zum Inhalt springen</a>
     <header class="bar">
       <div class="wrap bar-inner">
         <a class="wordmark" href={link('/')}>{site.name}</a>
         <nav aria-label="Hauptnavigation">
-          <a href={link('/methode')} aria-current={Astro.url.pathname === link('/methode') ? 'page' : undefined}
-            >So wählen wir aus</a
-          >
+          <a href={link('/methode')} aria-current={current('/methode')}>So wählen wir aus</a>
         </nav>
       </div>
     </header>
-    <main class="wrap">
+    <main id="inhalt" class="wrap">
       <slot />
     </main>
     <footer class="wrap">
       <div class="footer">
-        <nav aria-label="Rechtliches">
-          <a href={link('/methode')}>So wählen wir aus</a>
-          <a href={link('/datenschutz')}>Datenschutz</a>
-          <a href={link('/impressum')}>Impressum</a>
+        <nav aria-label="Weitere Seiten">
+          {
+            pages.map(page => (
+              <a href={link(page.path)} aria-current={current(page.path)}>
+                {page.label}
+              </a>
+            ))
+          }
         </nav>
         <p>{site.name}. Ein Kaufberater aus Deutschland.</p>
       </div>

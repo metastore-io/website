@@ -9,7 +9,7 @@ method, and the privacy policy and Impressum. Plain static HTML built with
 npm install
 npm run dev      # local preview with reload
 npm run check    # types
-npm test         # builds dist/, then checks every link and the noindex rule
+npm test         # builds dist/, validates the HTML, then checks links, head, noindex and access
 ```
 
 ## Where things are
@@ -28,6 +28,11 @@ npm test         # builds dist/, then checks every link and the noindex rule
 GitHub Pages, deployed by `.github/workflows/pages.yml` on every push to `main`; pull requests only
 build and check. The repository must stay public for Pages on the free plan. It serves at
 `https://metastore-io.github.io/website`.
+
+Every page carries a content security policy as a `<meta>` tag (`src/layouts/Page.astro`): only
+files of the site itself, no inline scripts or styles (`build.inlineStylesheets: 'never'`). GitHub
+Pages cannot set HTTP headers, so `frame-ancestors` (which a `<meta>` policy ignores) and HSTS stay
+unset until the site moves to a host that can.
 
 For a custom domain later: set it under Settings → Pages, add `public/CNAME` with the domain, and in
 `src/site.ts` set `origin` to `https://<domain>`, `base` to `/` and `indexable` to `true`.
