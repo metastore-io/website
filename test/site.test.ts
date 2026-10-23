@@ -136,3 +136,17 @@ test('the method page carries the app text with no placeholder left', () => {
   // The app's voice never says "KI" (metastore-io/app AGENTS.md).
   assert.doesNotMatch(html, /\bKI\b/);
 });
+
+test('text follows the browser font-size setting: no type size or letter spacing in px', () => {
+  // tokens.css: the --typography-* shorthands and their letter spacing (rem and em since LAUNCH-8).
+  const typography = [...tokens.matchAll(/--(typography-[\w-]+):\s*([^;]+);/g)];
+  assert.ok(typography.length > 0, 'tokens.css has no --typography-* values');
+  for (const [, name, value] of typography) {
+    assert.doesNotMatch(value!, /\dpx\b/, `--${name} is set in px`);
+  }
+  // site.css: no font, font-size or letter-spacing of its own in px.
+  const css = readFileSync(fileURLToPath(new URL('../src/styles/site.css', import.meta.url)), 'utf8');
+  for (const [declaration] of css.matchAll(/(?:font|font-size|letter-spacing):[^;]*;/g)) {
+    assert.doesNotMatch(declaration, /\dpx\b/, `site.css sets ${declaration}`);
+  }
+});
