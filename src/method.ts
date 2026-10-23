@@ -13,11 +13,15 @@ export const method = {
     },
     {
       "header": "So entsteht die Reihenfolge",
-      "body": "Wir vergleichen die Smartphones, die alles erfüllen, was du ausgewählt hast. Eine feste, versionierte Formel gewichtet ihre Daten nach dem, was dir wichtig ist: Gleiche Kriterien ergeben immer die gleiche Reihenfolge. Eine KI formuliert nur die Begründung und darf dabei nur Produkte und Preise aus dem Vergleich nennen."
+      "body": "Wir vergleichen die Smartphones, die alles erfüllen, was du ausgewählt hast. Eine feste, versionierte Formel gewichtet ihre Daten nach dem, was dir wichtig ist: Gleiche Kriterien ergeben immer die gleiche Reihenfolge. Ein Sprachmodell formuliert nur die Begründung und darf dabei nur Produkte und Preise aus dem Vergleich nennen."
     },
     {
       "header": "Der Gesamtpreis",
       "body": "Wir vergleichen Preise inklusive Mehrwertsteuer und Versand. Nennt ein Shop keine Versandkosten, rechnen wir sie nie als kostenlos: Das Angebot zeigt „+ Versand“ und steht am Ende."
+    },
+    {
+      "header": "Wann ein Preis gut ist",
+      "body": "Wir vergleichen den heutigen Gesamtpreis mit dem üblichen: dem Median der günstigsten Gesamtpreise je Tag in den letzten {{days}} Tagen. Liegt er mindestens {{good}} darunter, ist es ein guter Moment zum Kaufen. Liegt er mindestens {{wait}} darüber, raten wir zu warten. Ein Urteil gibt es erst, wenn wir an mindestens {{minDays}} Tagen Preise aus mindestens {{minShops}} Shops haben. Streichpreise der Shops zählen nicht."
     },
     {
       "header": "Nur was wir gemessen haben",

@@ -130,5 +130,9 @@ test('every page has its own title and description', () => {
 test('the method page carries the app text with no placeholder left', () => {
   const html = readFileSync(join(dist, 'methode.html'), 'utf8');
   assert.match(html, /Niemand kauft sich einen Platz/);
+  assert.match(html, /Wann ein Preis gut ist/);
+  assert.match(html, /in den letzten 90 Tagen/);
   assert.doesNotMatch(html, /\{\{/);
+  // The app's voice never says "KI" (metastore-io/app AGENTS.md).
+  assert.doesNotMatch(html, /\bKI\b/);
 });

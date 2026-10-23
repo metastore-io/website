@@ -2,15 +2,23 @@
 import Page from '../layouts/Page.astro';
 import { method } from '../method';
 
-/** The offers rule when this page is built; the app shows the live value from `GET /v1/method`. */
-const OFFER_MAX_AGE_HOURS = 48;
+/**
+ * The rules when this page is built (`maxAgeHours` in packages/scoring/src/offers.ts, `VERDICT_V1`
+ * in verdict.ts); the app shows the live values from `GET /v1/method`.
+ */
+const values: Record<string, string> = {
+  hours: '48',
+  days: '90',
+  good: '5\u00a0%',
+  wait: '5\u00a0%',
+  minDays: '30',
+  minShops: '3',
+};
 
-const sections = method.sections.map(
-  section => ({
-    header: section.header,
-    body: section.body.replaceAll('{{hours}}', String(OFFER_MAX_AGE_HOURS)),
-  }),
-);
+const sections = method.sections.map(section => ({
+  header: section.header,
+  body: section.body.replace(/\{\{(\w+)\}\}/g, (_, key: string) => values[key] ?? ''),
+}));
 ---
 
 <Page title={method.title} description={method.intro}>
